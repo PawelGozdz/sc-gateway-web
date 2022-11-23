@@ -17,7 +17,7 @@ export const proxySettings: Options = {
 	onProxyReq: fixRequestBody,
 	onProxyRes: responseInterceptor(async (buffer, proxyRes, _, res): Promise<any> => {
 		try {
-			const responseFromService = buffer.toString('utf8');
+			const responseFromService = Buffer.isBuffer(buffer) && buffer.toJSON()?.data.length > 0 ? buffer.toString('utf8') : '';
 
 			res.setHeader('content-type', 'application/json; charset=utf-8');
 

@@ -1,19 +1,20 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { WebHttpExceptionFilter } from './interceptors';
-// import helmet from 'helmet';
+import helmet from 'helmet';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-	// app.use(helmet());
-	// app.useGlobalPipes(
-	// 	new ValidationPipe({
-	// 		transform: true,
-	// 		whitelist: true,
-	// 	}),
-	// );
+	app.use(helmet());
+	app.useGlobalPipes(
+		new ValidationPipe({
+			transform: true,
+			whitelist: true,
+		}),
+	);
 
 	app.useGlobalFilters(new WebHttpExceptionFilter());
 	// app.set('trust proxy', 1);
